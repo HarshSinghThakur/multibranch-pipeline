@@ -23,7 +23,7 @@ pipeline {
 			}
 			stage ('deploy-index') {
 			steps {
-			sh " cp /mnt/master/multibranch/index.html /var/www/html/index.html"
+			sh " cp /mnt/master/multibranch-pipeline/index.html /var/www/html/index.html"
 				}
 			}
 	}
