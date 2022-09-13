@@ -8,7 +8,6 @@ pipeline {
 		stage ('cloning') {
 			steps {
 			dir ('/mnt/22Q2/') {
-			sh "sudo yum install git -y"
 			sh "git clone https://github.com/Sharsh125/multibranch-pipeline.git -b 22Q2"
 			sh "sudo chmod -R 777 /mnt/22Q2"
 			}
@@ -21,11 +20,11 @@ pipeline {
 			sh "sudo chkconfig httpd on"
 			sh "sudo chmod -R 777 /var/www/html"
 				}
-			}
-			stage ('deploy-index') {
+		}
+		stage ('deploy-index') {
 			steps {
-			sh "sudo cp /mnt/22Q2/multibranch/index.html /var/www/html/index.html"
+			sh "sudo cp /mnt/22Q2/multibranch-pipeline/index.html /var/www/html/"
 				}
-			}
+		}
 	}
 }
