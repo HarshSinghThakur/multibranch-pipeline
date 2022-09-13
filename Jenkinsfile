@@ -8,6 +8,7 @@ pipeline {
 		stage ('cloning') {
 			steps {
 			dir ('/mnt/master/') {
+			sh "rm -rf /mnt/master/multibranch-pipeline"
 			sh "git clone https://github.com/Sharsh125/multibranch-pipeline.git -b master"
 			sh "chmod -R 777 /mnt/master"
 			}
