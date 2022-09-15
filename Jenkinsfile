@@ -4,9 +4,10 @@ label 'built-in'
 customWorkspace '/mnt/docker'
 }
 stages {
-stage {
+stage ('clone') {
 steps {
 sh "ls -ltra"
+}
 }
 }
 }
