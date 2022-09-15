@@ -1,7 +1,9 @@
 pipeline {
 agent {
-label 'built-in'
-customWorkspace '/mnt/docker'
+label {
+	label 'built-in'
+	customWorkspace '/mnt/docker'
+}
 }
 stages {
 stage ('clone') {
