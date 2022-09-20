@@ -1,25 +1,18 @@
 pipeline {
-	agent none
-	stages {
-		stage ('Clone-repo') {
-		agent {
-		label {
+	agent {
+	label {
 		label 'built-in'
 		customWorkspace '/mnt/game-war/'
-		}
-		}
+	}
+	}
+	stages {
+		stage ('Clone-repo') {
 		steps {
 			sh "rm -rf *"
 			sh "git clone https://github.com/Sharsh125/game-of-life.git"
 		}
 		}
 		stage ('build-war') {
-		agent {
-		label {
-		label 'built-in'
-		customWorkspace '/mnt/game-war/'
-		}
-		}
 		steps {
 			dir ('/mnt/game-war/game-of-life/') {
 			sh "mvn install -Dmaven.test.skip=true"
@@ -27,12 +20,6 @@ pipeline {
 		}
 		}
 		stage ('deploy-slave') {
-		agent {
-		label {
-		label 'built-in'
-		customWorkspace '/mnt/game-war/'
-		}
-		}
 				steps {
 					sh "cp /mnt/OhioKey.pem /mnt/game-war"
 					sh "scp -i OhioKey.pem /mnt/game-war/game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.11.176:/mnt/slave1"
@@ -53,7 +40,6 @@ pipeline {
 				steps {
 				sh "sudo yum install docker -y"
 				sh "sudo systemctl start docker"
-				sh "sudo cp /mnt/Dockerfile /mnt/slave1/"
 				sh "sudo docker build -t myserver:1.0 ."
 				sh "sudo docker run -dp 8081:8080 myserver:1.0"
 				}
@@ -68,7 +54,6 @@ pipeline {
 				steps {
 				sh "sudo yum install docker -y"
 				sh "sudo systemctl start docker"
-				sh "sudo cp /mnt/Dockerfile /mnt/slave2/"
 				sh "sudo docker build -t myserver:2.0 ."
 				sh "sudo docker run -dp 8081:8080 myserver:2.0"
 				}
