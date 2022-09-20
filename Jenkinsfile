@@ -33,7 +33,7 @@ pipeline {
 			stage ('slave1') {
 				agent {
 				node {	
-				label "172.31.11.176-Slave1"
+				label "172.31.11.176-slave1"
 				customWorkspace "/mnt/"
 				}		
 				}
@@ -47,7 +47,7 @@ pipeline {
 				stage ('slave2') {
 				agent {
 				node {	
-				label "172.31.11.4-Slave2"
+				label "172.31.11.4-slave2"
 				customWorkspace "/mnt/"
 				}		
 				}
