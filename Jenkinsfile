@@ -8,6 +8,7 @@ pipeline {
 	stages {
 		stage ('Clone-repo') {
 		steps {
+			sh " rm -rf *"
 			sh "git clone https://github.com/Sharsh125/game-of-life.git"
 		}
 		}
