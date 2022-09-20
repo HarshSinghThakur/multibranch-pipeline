@@ -8,7 +8,7 @@ pipeline {
 	stages {
 		stage ('Clone-repo') {
 		steps {
-			sh " rm -rf *"
+			sh "rm -rf *"
 			sh "git clone https://github.com/Sharsh125/game-of-life.git"
 		}
 		}
@@ -19,21 +19,46 @@ pipeline {
 			}
 		}
 		}
-		/*
-		stage ('Parallel'){
+		stage ('deploy-slave') {
+				steps {
+					sh "cp /mnt/OhioKey /mnt/game-war/"
+					sh "scp -i OhioKey.pem game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.11.176:/mnt/"
+					sh "scp -i OhioKey.pem /mnt/Dockerfile ec2-user@172.31.11.176:/mnt/"
+					sh "scp -i OhioKey.pem game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.11.4:/mnt/"
+					sh "scp -i OhioKey.pem /mnt/Dockerfile ec2-user@172.31.11.4:/mnt/"
+				}		
+		stage ('parallel-stages') {
 		parallel {
-			stage ('deploy-slave1') {
-				steps {
-					sh "scp -i OhioKey.pem game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.15.245:/mnt/server/apache-tomcat-9.0.65/webapps"
-			}
-			}
-			stage ('deploy-slave2') {
-				steps {
-					sh "scp -i OhioKey.pem game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.5.111:/mnt/server/apache-tomcat-9.0.65/webapps"
+			stage ('slave1') {
+				agent {
+				node {	
+				label "172.31.11.176-Slave1"
+				customWorkspace "/mnt/"
+				}		
 				}
-			}
+				steps {
+				sh "sudo yum install docker -y"
+				sh "systemctl start docker"
+				sh "docker build -t myserver:1.0 ."
+				sh "docker run -dp 8081:8080 myserver:1.0"
+				}
+				}
+				stage ('slave2') {
+				agent {
+				node {	
+				label "172.31.11.4-Slave2"
+				customWorkspace "/mnt/"
+				}		
+				}
+				steps {
+				sh "sudo yum install docker -y"
+				sh "systemctl start docker"
+				sh "docker build -t myserver:2.0 ."
+				sh "docker run -dp 8081:8080 myserver:2.0"
+				}
+				}
+		
 		}
-		} 
-		*/
+		}
 }
 }
