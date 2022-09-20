@@ -30,7 +30,7 @@ pipeline {
 		}				
 		stage ('parallel-stages') {
 		parallel {
-			stage ('slave1') {
+			stage ('slave1-container') {
 				agent {
 				node {	
 				label 'slave1'
@@ -44,7 +44,7 @@ pipeline {
 				sh "docker run -dp 8081:8080 myserver:1.0"
 				}
 				}
-				stage ('slave2') {
+				stage ('slave2-container') {
 				agent {
 				node {	
 				label 'slave2'
