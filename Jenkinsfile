@@ -41,6 +41,7 @@ pipeline {
 				sh "sudo yum install docker -y"
 				sh "sudo systemctl start docker"
 				sh "sudo cp /mnt/Dockerfile /mnt/slave1/"
+				sh "sudo cp /mnt/gameoflife.war /mnt/slave1/"
 				sh "sudo docker build -t myserver:1.0 ."
 				sh "sudo docker run -dp 8081:8080 myserver:1.0"
 				}
@@ -56,6 +57,7 @@ pipeline {
 				sh "sudo yum install docker -y"
 				sh "sudo systemctl start docker"
 				sh "sudo cp /mnt/Dockerfile /mnt/slave2/"
+				sh "sudo cp /mnt/gameoflife.war /mnt/slave2/"
 				sh "sudo docker build -t myserver:2.0 ."
 				sh "sudo docker run -dp 8081:8080 myserver:2.0"
 				}
