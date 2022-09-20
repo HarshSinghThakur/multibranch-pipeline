@@ -21,11 +21,11 @@ pipeline {
 		}
 		stage ('deploy-slave') {
 				steps {
-					sh "cp /mnt/OhioKey.pem /mnt/game-war/"
-					sh "scp -i OhioKey.pem game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.11.176:/mnt/"
-					sh "scp -i OhioKey.pem /mnt/Dockerfile ec2-user@172.31.11.176:/mnt/"
-					sh "scp -i OhioKey.pem game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.11.4:/mnt/"
-					sh "scp -i OhioKey.pem /mnt/Dockerfile ec2-user@172.31.11.4:/mnt/"
+					sh "cp /mnt/OhioKey.pem /mnt/game-war"
+					sh "scp -i OhioKey.pem /mnt/game-war/game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.11.176:/mnt"
+					sh "scp -i OhioKey.pem /mnt/Dockerfile ec2-user@172.31.11.176:/mnt"
+					sh "scp -i OhioKey.pem /mnt/game-war/game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.11.4:/mnt"
+					sh "scp -i OhioKey.pem /mnt/Dockerfile ec2-user@172.31.11.4:/mnt"
 				}
 		}				
 		stage ('parallel-stages') {
