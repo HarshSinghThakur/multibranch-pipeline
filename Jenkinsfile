@@ -1,18 +1,25 @@
 pipeline {
-	agent {
-	label {
-		label 'built-in'
-		customWorkspace '/mnt/game-war/'
-	}
-	}
+	agent none
 	stages {
 		stage ('Clone-repo') {
+		agent {
+		label {
+		label 'built-in'
+		customWorkspace '/mnt/game-war/'
+		}
+		}
 		steps {
 			sh "rm -rf *"
 			sh "git clone https://github.com/Sharsh125/game-of-life.git"
 		}
 		}
 		stage ('build-war') {
+		agent {
+		label {
+		label 'built-in'
+		customWorkspace '/mnt/game-war/'
+		}
+		}
 		steps {
 			dir ('/mnt/game-war/game-of-life/') {
 			sh "mvn install -Dmaven.test.skip=true"
@@ -20,6 +27,12 @@ pipeline {
 		}
 		}
 		stage ('deploy-slave') {
+		agent {
+		label {
+		label 'built-in'
+		customWorkspace '/mnt/game-war/'
+		}
+		}
 				steps {
 					sh "cp /mnt/OhioKey.pem /mnt/game-war"
 					sh "scp -i OhioKey.pem /mnt/game-war/game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.11.176:/mnt/slave1"
