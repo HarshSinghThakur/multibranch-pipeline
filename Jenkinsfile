@@ -1,28 +1,38 @@
 pipeline {
 	agent {
-		label {
-			label 'built-in'
-			customWorkspace '/mnt'
-			}
-		}
+	label {
+		label 'built-in'
+		customWorkspace '/mnt/game-war/'
+	}
+	}
 	stages {
-		stage ('install-deploy'){
-			steps {
-				sh "yum install docker -y"
-				sh "systemctl start docker" 
-				}
+		stage ('Clone-repo') {
+		steps {
+			sh "git clone https://github.com/Sharsh125/game-of-life.git"
+		}
+		}
+		stage ('build-war') {
+		steps {
+			dir ('/mnt/game-war/game-of-life/') {
+			sh "mvn install -Dmaven.test.skip=true"
 			}
-		stage ('run') {
-			steps {
-				sh "docker stop server1 server2 server3"
-				sh " docker rm server1 server2 server3"
-				sh "docker run --name server1 -itdp 80:80 httpd"
-				sh "docker run --name server2 -itdp 90:80 httpd"
-				sh "docker run --name server3 -itdp 8085:80 httpd"
-				sh "docker cp /mnt/master/multibranch-pipeline/index.html server1:/usr/local/apache2/htdocs"
-				sh "docker cp /mnt/22Q1/multibranch-pipeline/index.html server2:/usr/local/apache2/htdocs"
-				sh "docker cp /mnt/22Q2/multibranch-pipeline/index.html server3:/usr/local/apache2/htdocs"
+		}
+		}
+		/*
+		stage ('Parallel'){
+		parallel {
+			stage ('deploy-slave1') {
+				steps {
+					sh "scp -i OhioKey.pem game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.15.245:/mnt/server/apache-tomcat-9.0.65/webapps"
+			}
+			}
+			stage ('deploy-slave2') {
+				steps {
+					sh "scp -i OhioKey.pem game-of-life/gameoflife-web/target/gameoflife.war ec2-user@172.31.5.111:/mnt/server/apache-tomcat-9.0.65/webapps"
 				}
 			}
 		}
+		} 
+		*/
+}
 }
