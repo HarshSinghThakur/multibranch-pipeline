@@ -9,7 +9,7 @@ pipeline {
 		stage ('Clone-repo') {
 		steps {
 			sh "rm -rf *"
-			sh "git clone https://github.com/Sharsh125/game-of-life.git"
+			sh "git clone https://github.com/HarshSinghThakur/game-of-life.git"
 		}
 		}
 		stage ('build-war') {
